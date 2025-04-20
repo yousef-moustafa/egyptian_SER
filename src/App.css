@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -74,16 +75,19 @@ body {
   height: 1570px;
   background: var(--bg-animated-gradient-background-indigo-1);
   border-radius: 50%;
-  filter: blur(90px) brightness(1); /* ← base state */
+  filter: blur(90px) brightness(1);
   opacity: 0.75;
   animation: pulse 6s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(-50%, 0, 0) scale(1);
     opacity: 0.75;
   }
+
   50% {
     transform: translate3d(-50%, 0, 0) scale(1.05);
     opacity: 0.85;

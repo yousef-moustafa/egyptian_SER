@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import LiveWaveform from './LiveWaveform';
-import './App.css'; // assuming styles are in here
+import React from 'react'
+import LiveWaveform from './LiveWaveform'
+import './App.css'
 
 function App() {
   return (
@@ -8,9 +8,9 @@ function App() {
       <div className="glow-container">
         <div className="glow-sphere"></div>
       </div>
-      <LiveWaveform/>
+      <LiveWaveform />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App 

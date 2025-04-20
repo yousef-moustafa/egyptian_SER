@@ -1,18 +1,23 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const LiveWaveform = () => {
-  const canvasRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const analyserRef = useRef(null);
-  const [audioStarted, setAudioStarted] = useState(false);
+const LiveWaveform: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const [audioStarted, setAudioStarted] = useState<boolean>(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+    
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
     canvas.width = window.innerWidth;
     canvas.height = 300;
 
-    const handleResize = () => {
+    const handleResize = (): void => {
+      if (!canvas) return;
       canvas.width = window.innerWidth;
       canvas.height = 300;
     };
@@ -26,7 +31,7 @@ const LiveWaveform = () => {
     };
   }, []);
 
-  const startAudio = () => {
+  const startAudio = (): void => {
     if (audioStarted) return;
     setAudioStarted(true);
 
@@ -49,10 +54,14 @@ const LiveWaveform = () => {
       });
   };
 
-  const visualize = () => {
+  const visualize = (): void => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
     const analyser = analyserRef.current;
+    
+    if (!canvas || !analyser) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
@@ -64,7 +73,7 @@ const LiveWaveform = () => {
     const smoothedVolumes = new Array(totalBars / 2).fill(0);
     const smoothingFactor = 0.15; // Lower = smoother
 
-    const draw = () => {
+    const draw = (): void => {
       requestAnimationFrame(draw);
       analyser.getByteFrequencyData(dataArray);
 
@@ -108,23 +117,29 @@ const LiveWaveform = () => {
   return (
     <div>
       {!audioStarted && (
-        <button onClick={startAudio} style={{
-          margin: '20px auto',
-          padding: '12px 24px',
-          display: 'block',
-          fontSize: '16px',
-          border: 'none',
-          background: '#9d4edd',
-          color: '#fff',
-          borderRadius: '6px',
-          cursor: 'pointer'
-        }}>
+        <button 
+          onClick={startAudio} 
+          style={{
+            margin: '20px auto',
+            padding: '12px 24px',
+            display: 'block',
+            fontSize: '16px',
+            border: 'none',
+            background: '#9d4edd',
+            color: '#fff',
+            borderRadius: '6px',
+            cursor: 'pointer'
+          }}
+        >
           Start Listening
         </button>
       )}
-      <canvas ref={canvasRef} style={{ width: '100%', height: '300px', display: 'block'}} />
+      <canvas 
+        ref={canvasRef} 
+        style={{ width: '100%', height: '300px', display: 'block'}} 
+      />
     </div>
   );
 };
 
-export default LiveWaveform;
+export default LiveWaveform; 
